@@ -3,7 +3,8 @@ import Colors from "../constants/Colors";
 import { Product } from "../types";
 import { Link, useSegments } from "expo-router";
 
-export const defaultPizzaImage = "https://i.imgur.com/KaO2MNS.jpeg";
+export const defaultPizzaImage =
+    "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
 
 type ProductListItemProps = {
     product: Product;
