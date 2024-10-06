@@ -54,7 +54,7 @@ function RootLayoutNav() {
 
     return (
         <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+            value={colorScheme === "dark" ? DefaultTheme : DarkTheme}
         >
             <CartProvider>
                 <Stack>

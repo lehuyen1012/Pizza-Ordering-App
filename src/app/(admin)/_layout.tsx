@@ -20,8 +20,8 @@ export default function TabLayout() {
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: Colors.light.background,
-                tabBarInactiveTintColor: "gainsboro",
+                tabBarActiveTintColor: "#fff",
+                tabBarInactiveTintColor: "rgba(255, 255, 255, 0.6)",
                 tabBarStyle: {
                     backgroundColor: Colors.light.tint,
                 },
