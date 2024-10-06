@@ -5,12 +5,14 @@ import {
     ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, Redirect } from "expo-router";
+import { useAuth } from "@/providers/AuthProvider";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "react-native";
 import CartProvider from "@/providers/CartProvider";
+import AuthProvider from "@/providers/AuthProvider";
 
 export {
     // Catch any errors thrown by the Layout component.
@@ -51,31 +53,38 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
     const colorScheme = useColorScheme();
+    const { session } = useAuth();
+
+    if (!session) {
+        return <Redirect href={"/"} />;
+    }
 
     return (
         <ThemeProvider
             value={colorScheme === "dark" ? DefaultTheme : DarkTheme}
         >
-            <CartProvider>
-                <Stack>
-                    <Stack.Screen
-                        name="(user)"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="(admin)"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="(auth)"
-                        options={{ headerShown: false }}
-                    />
-                    <Stack.Screen
-                        name="cart"
-                        options={{ presentation: "modal" }}
-                    />
-                </Stack>
-            </CartProvider>
+            <AuthProvider>
+                <CartProvider>
+                    <Stack>
+                        <Stack.Screen
+                            name="(user)"
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="(admin)"
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="(auth)"
+                            options={{ headerShown: false }}
+                        />
+                        <Stack.Screen
+                            name="cart"
+                            options={{ presentation: "modal" }}
+                        />
+                    </Stack>
+                </CartProvider>
+            </AuthProvider>
         </ThemeProvider>
     );
 }
