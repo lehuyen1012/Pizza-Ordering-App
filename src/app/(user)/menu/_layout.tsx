@@ -6,10 +6,6 @@ export default function MenuStack() {
     return (
         <Stack
             screenOptions={{
-                // contentStyle: { backgroundColor: Colors.light.background },
-                // headerStyle: {
-                //     backgroundColor: "white",
-                // },
                 headerRight: () => (
                     <Link href="/cart" asChild>
                         <Pressable>
