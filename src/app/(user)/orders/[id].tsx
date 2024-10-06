@@ -16,7 +16,6 @@ export default function OrderDetailsScreen() {
     return (
         <View style={{ padding: 10, gap: 20 }}>
             <Stack.Screen options={{ title: `order #${id}` }} />
-            <OrderListItem order={order} />
 
             <FlatList
                 data={order.order_items}
