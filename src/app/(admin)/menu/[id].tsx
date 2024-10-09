@@ -9,19 +9,22 @@ import { useCart } from "@/providers/CartProvider";
 import { PizzaSize } from "@/types";
 import { Link } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
+import { useProduct } from "@/api/products";
+import { ActivityIndicator } from "react-native";
+import RemoteImage from "@/components/RemoteImage";
 const sizes: PizzaSize[] = ["S", "M", "L", "XL"];
 
 const ProductDetailsScreen = () => {
-    const { id } = useLocalSearchParams();
-
+    const { id: idString } = useLocalSearchParams();
+    const id = parseFloat(
+        typeof idString === "string" ? idString : idString[0]
+    );
+    const { data: product, isLoading, error } = useProduct(id);
     const { addItem } = useCart();
 
     const router = useRouter();
 
     const [selectedSize, setSelectedSize] = useState<PizzaSize>("M");
-
-    const product = products.find((p) => p.id.toString() === id);
 
     const addToCard = () => {
         if (!product) {
@@ -30,6 +33,14 @@ const ProductDetailsScreen = () => {
         addItem(product, selectedSize);
         router.push("/cart");
     };
+
+    if (isLoading) {
+        return <ActivityIndicator />;
+    }
+
+    if (error) {
+        return <Text>Error</Text>;
+    }
     return (
         <View style={styles.container}>
             <Stack.Screen
@@ -56,8 +67,9 @@ const ProductDetailsScreen = () => {
             />
             <Stack.Screen options={{ title: product?.name }} />
 
-            <Image
-                source={{ uri: product?.image || defaultPizzaImage }}
+            <RemoteImage
+                path={product?.image}
+                fallback={defaultPizzaImage}
                 style={styles.image}
             />
             <Text style={styles.title}>{product?.name}</Text>
