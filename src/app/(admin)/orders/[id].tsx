@@ -6,12 +6,12 @@ import {
     ActivityIndicator,
 } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
-import { OrderStatusList } from "@/types";
+import { OrderStatus, OrderStatusList } from "@/types";
 import OrderListItem from "@/components/OrderListItem";
 import OrderItemListItem from "@/components/OrderItemListItem";
 import Colors from "@/constants/Colors";
 import orders from "@assets/data/orders";
-import { useOrderDetails } from "@/api/orders";
+import { useOrderDetails, useUpdateOrder } from "@/api/orders";
 
 export default function OrderDetailsScreen() {
     const { id: idString } = useLocalSearchParams();
@@ -20,6 +20,12 @@ export default function OrderDetailsScreen() {
     );
 
     const { data: order, isLoading, error } = useOrderDetails(id);
+    const { mutate: updateOrder } = useUpdateOrder();
+
+    const updateStatus = (status: string) => {
+        updateOrder({ id: id, updatedFields: { status } });
+    };
+
     if (isLoading) {
         return <ActivityIndicator />;
     }
@@ -43,9 +49,7 @@ export default function OrderDetailsScreen() {
                             {OrderStatusList.map((status) => (
                                 <Pressable
                                     key={status}
-                                    onPress={() =>
-                                        console.warn("Update status")
-                                    }
+                                    onPress={() => updateStatus(status)}
                                     style={{
                                         borderColor: Colors.light.tint,
                                         borderWidth: 1,
