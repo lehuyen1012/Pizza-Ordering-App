@@ -1,6 +1,4 @@
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
-import React from "react";
-import orders from "@assets/data/orders";
+import { Text, FlatList, ActivityIndicator } from "react-native";
 import OrderListItem from "@/components/OrderListItem";
 import { useAdminOrderList } from "@/api/orders";
 
@@ -22,7 +20,7 @@ export default function OrdersScreen() {
         <FlatList
             data={orders}
             renderItem={({ item }) => <OrderListItem order={item} />}
-            contentContainerStyle={{ padding: 10, gap: 10 }}
+            contentContainerStyle={{ gap: 10, padding: 10 }}
         />
     );
 }

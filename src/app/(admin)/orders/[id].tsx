@@ -12,6 +12,7 @@ import OrderItemListItem from "@/components/OrderItemListItem";
 import Colors from "@/constants/Colors";
 import orders from "@assets/data/orders";
 import { useOrderDetails } from "@/api/orders";
+
 export default function OrderDetailsScreen() {
     const { id: idString } = useLocalSearchParams();
     const id = parseFloat(
@@ -22,13 +23,13 @@ export default function OrderDetailsScreen() {
     if (isLoading) {
         return <ActivityIndicator />;
     }
-    if (error) {
+    if (error || !order) {
         return <Text>Error</Text>;
     }
 
     return (
         <View style={{ padding: 10, gap: 20 }}>
-            <Stack.Screen options={{ title: `order #${id}` }} />
+            <Stack.Screen options={{ title: `Order #${id}` }} />
 
             <FlatList
                 data={order.order_items}
@@ -36,7 +37,7 @@ export default function OrderDetailsScreen() {
                 contentContainerStyle={{ gap: 10 }}
                 ListHeaderComponent={() => <OrderListItem order={order} />}
                 ListFooterComponent={() => (
-                    <>
+                    <View>
                         <Text style={{ fontWeight: "bold" }}>Status</Text>
                         <View style={{ flexDirection: "row", gap: 5 }}>
                             {OrderStatusList.map((status) => (
@@ -70,7 +71,7 @@ export default function OrderDetailsScreen() {
                                 </Pressable>
                             ))}
                         </View>
-                    </>
+                    </View>
                 )}
             />
         </View>
