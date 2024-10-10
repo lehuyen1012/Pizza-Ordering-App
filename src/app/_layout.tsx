@@ -15,6 +15,7 @@ export {
     // Catch any errors thrown by the Layout component.
     ErrorBoundary,
 } from "expo-router";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 export const unstable_settings = {
     // Ensure that reloading on `/modal` keeps a back button present.
@@ -54,30 +55,36 @@ function RootLayoutNav() {
         <ThemeProvider
             value={colorScheme === "dark" ? DefaultTheme : DarkTheme}
         >
-            <AuthProvider>
-                <QueryProvider>
-                    <CartProvider>
-                        <Stack>
-                            <Stack.Screen
-                                name="(user)"
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="(admin)"
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="(auth)"
-                                options={{ headerShown: false }}
-                            />
-                            <Stack.Screen
-                                name="cart"
-                                options={{ presentation: "modal" }}
-                            />
-                        </Stack>
-                    </CartProvider>
-                </QueryProvider>
-            </AuthProvider>
+            <StripeProvider
+                publishableKey={
+                    process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY || ""
+                }
+            >
+                <AuthProvider>
+                    <QueryProvider>
+                        <CartProvider>
+                            <Stack>
+                                <Stack.Screen
+                                    name="(user)"
+                                    options={{ headerShown: false }}
+                                />
+                                <Stack.Screen
+                                    name="(admin)"
+                                    options={{ headerShown: false }}
+                                />
+                                <Stack.Screen
+                                    name="(auth)"
+                                    options={{ headerShown: false }}
+                                />
+                                <Stack.Screen
+                                    name="cart"
+                                    options={{ presentation: "modal" }}
+                                />
+                            </Stack>
+                        </CartProvider>
+                    </QueryProvider>
+                </AuthProvider>
+            </StripeProvider>
         </ThemeProvider>
     );
 }
