@@ -1,11 +1,11 @@
 import { CartItem, Tables } from "@/types";
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 import { randomUUID } from "expo-crypto";
 import { useInsertOrder } from "@/api/orders";
 import { useRouter } from "expo-router";
-import { setItem } from "expo-secure-store";
 import { useInsertOrderItems } from "@/api/order-items";
-import { initialisePaymentSheet, openPaymentSheet } from "@/lib/stripe";
+import { initializePaymentSheet, openPaymentSheet } from "@/lib/stripe";
+
 type Product = Tables<"products">;
 
 type CartType = {
@@ -33,9 +33,9 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const router = useRouter();
 
     const addItem = (product: Product, size: CartItem["size"]) => {
-        //if existing item, increment quantity
+        // if already in cart, increment quantity
         const existingItem = items.find(
-            (item) => item.product_id === product.id && item.size === size
+            (item) => item.product === product && item.size === size
         );
 
         if (existingItem) {
@@ -44,7 +44,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         }
 
         const newCartItem: CartItem = {
-            id: randomUUID(),
+            id: randomUUID(), // generate
             product,
             product_id: product.id,
             size,
@@ -54,7 +54,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
         setItems([newCartItem, ...items]);
     };
 
-    //update Quantity
+    // updateQuantity
     const updateQuantity = (itemId: string, amount: -1 | 1) => {
         setItems(
             items
@@ -75,8 +75,9 @@ const CartProvider = ({ children }: PropsWithChildren) => {
     const clearCart = () => {
         setItems([]);
     };
+
     const checkout = async () => {
-        await initialisePaymentSheet(Math.floor(total * 100));
+        await initializePaymentSheet(Math.floor(total * 10));
         const payed = await openPaymentSheet();
         if (!payed) {
             return;
@@ -89,6 +90,7 @@ const CartProvider = ({ children }: PropsWithChildren) => {
             }
         );
     };
+
     const saveOrderItems = (order: Tables<"orders">) => {
         const orderItems = items.map((cartItem) => ({
             order_id: order.id,

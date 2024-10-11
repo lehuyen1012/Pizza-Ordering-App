@@ -11,14 +11,10 @@ import { useColorScheme } from "react-native";
 import CartProvider from "@/providers/CartProvider";
 import AuthProvider from "@/providers/AuthProvider";
 import QueryProvider from "@/providers/QueryProvider";
-export {
-    // Catch any errors thrown by the Layout component.
-    ErrorBoundary,
-} from "expo-router";
+export { ErrorBoundary } from "expo-router";
 import { StripeProvider } from "@stripe/stripe-react-native";
 
 export const unstable_settings = {
-    // Ensure that reloading on `/modal` keeps a back button present.
     initialRouteName: "(tabs)",
 };
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -53,7 +49,7 @@ function RootLayoutNav() {
 
     return (
         <ThemeProvider
-            value={colorScheme === "dark" ? DefaultTheme : DarkTheme}
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
         >
             <StripeProvider
                 publishableKey={
@@ -65,11 +61,11 @@ function RootLayoutNav() {
                         <CartProvider>
                             <Stack>
                                 <Stack.Screen
-                                    name="(user)"
+                                    name="(admin)"
                                     options={{ headerShown: false }}
                                 />
                                 <Stack.Screen
-                                    name="(admin)"
+                                    name="(user)"
                                     options={{ headerShown: false }}
                                 />
                                 <Stack.Screen
