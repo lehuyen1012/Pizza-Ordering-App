@@ -13,13 +13,15 @@
       "backgroundColor": "#fff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.huyene10.FoodOrdering"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.huyene10.FoodOrdering"
     },
     "web": {
       "bundler": "metro",
@@ -33,6 +35,11 @@
     "experiments": {
       "typedRoutes": true,
       "tsconfigPath": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9856f866-f582-4ae2-99da-c02b71fa8f2e"
+      }
     }
   }
 }
